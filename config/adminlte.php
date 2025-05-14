@@ -313,61 +313,59 @@ return [
         // Sidebar items:
         [
             'type' => 'sidebar-menu-search',
-            'text' => 'search',
+            'text' => 'Buscar',
         ],
         [
             'text' => 'blog',
             'url' => 'admin/blog',
             'can' => 'manage-blog',
         ],
-        [
-            'text' => 'pages',
-            'url' => 'admin/pages',
-            'icon' => 'far fa-fw fa-file',
-            'label' => 4,
-            'label_color' => 'success',
-        ],
-        ['header' => 'account_settings'],
-        [
-            'text' => 'profile',
-            'url' => 'admin/settings',
-            'icon' => 'fas fa-fw fa-user',
-        ],
-        [
-            'text' => 'change_password',
-            'url' => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
-        ],
+
+        // ['header' => 'account_settings'],
+        // [
+        //     'text' => 'profile',
+        //     'url' => 'admin/settings',
+        //     'icon' => 'fas fa-fw fa-user',
+        // ],
+        // [
+        //     'text' => 'change_password',
+        //     'url' => 'admin/settings',
+        //     'icon' => 'fas fa-fw fa-lock',
+        // ],
         
-        ['header' => 'labels'],
+        ['header' => 'Registros'],
         [
-            'text' => 'CLIENTES',
-            'icon_color' => 'red',
+            'text' => 'Clientes',
+            'icon' => 'fas fa-fw fa-user',
             'url' => 'clientes/index',
         ],
         [
-            'text' => 'EMPLEADOS',
-            'icon_color' => 'red',
+            'text' => 'Empleados',
+            'icon' => 'fas fa-fw fa-user-tie',
             'url' => 'empleados/index',
         ],
         [
-            'text' => 'PRODUCTOS',
-            'icon_color' => 'yellow',
-            'url' => 'productos/index',
-        ],
-        [
             'text' => 'PROVEEDORES',
-            'icon_color' => 'red',
+            'icon' => 'fas fa-fw fa-truck',
             'url' => 'proveedores/index',
         ],
         [
+            'text' => 'PRODUCTOS',
+            'icon' => 'fas fa-fw fa-box-open',
+            'url' => 'productos/index',
+        ],
+
+        ['header' => 'Documentos'],
+        [
             'text' => 'ORDENES DE COMPRA',
-            'icon_color' => 'blue',
+            'icon' => 'fas fa-fw fa-file',
             'url' => 'orden_compras/index',
         ],
+
+        ['header' => 'Detalles'],
         [
-            'text' => 'DETALLES',
-            'icon' => 'fas fa-fw fa-share',
+            'text' => 'Adicionales',
+            'icon' => 'fas fa-fw fa-circle-info',
             'submenu' => [
                 [
                     'text' => 'Categorias',
