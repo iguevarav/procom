@@ -86,16 +86,17 @@
         </div>
 
 
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-2">
-            <label for="fecha_nacimiento" class="required_field mb-2" style="font-weight: bold;">Fecha Nacimiento</label>
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">
-                    <i class="fa-solid fa-file-signature"></i>
-                </span>
-                <input required id="fecha_nacimiento" maxlength="260" name="fecha_nacimiento" type="text" class="form-control" placeholder="YYYY-MM-DD" aria-label="Username" aria-describedby="basic-addon1">
-            </div>
-            <span class="fecha_nacimiento_error msgError" style="color:red;"></span>
-        </div>
+       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-2">
+    <label for="fecha_nacimiento" class="required_field mb-2" style="font-weight: bold;">Fecha Nacimiento</label>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">
+            <i class="fa-solid fa-calendar-days"></i>
+        </span>
+        <input required id="fecha_nacimiento" name="fecha_nacimiento" type="date" class="form-control" aria-label="Fecha de Nacimiento" aria-describedby="basic-addon1">
+    </div>
+    <span class="fecha_nacimiento_error msgError" style="color:red;"></span>
+</div>
+
 
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-2">
             <label for="salario" class="required_field mb-2" style="font-weight: bold;">Salario</label>

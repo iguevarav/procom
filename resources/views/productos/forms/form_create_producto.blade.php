@@ -61,48 +61,48 @@
             <span class="marca_error msgError" style="color:red;"></span>
         </div>
 
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-2">
-            <label for="costo" class="required_field mb-2" style="font-weight: bold;">Costo</label>
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">
-                    <i class="fa-solid fa-money-check-dollar"></i>
-                </span>
-                <input value="1.00" required id="costo" maxlength="20" name="costo" type="text" class="form-control inputDecimalPositivo" placeholder="Costo" aria-label="Username" aria-describedby="basic-addon1">
-            </div>
-            <span class="costo_error msgError" style="color:red;"></span>
-        </div>
-
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-2">
-            <label for="precio" class="required_field mb-2" style="font-weight: bold;">Precio</label>
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">
-                    <i class="fa-solid fa-money-check-dollar"></i>
-                </span>
-                <input value="1.00" required id="precio" maxlength="20" name="precio" type="text" class="form-control inputDecimalPositivo" placeholder="Precio" aria-label="Username" aria-describedby="basic-addon1">
-            </div>
-            <span class="precio_error msgError" style="color:red;"></span>
-        </div>
-
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-2">
-            <label for="stock" class="required_field mb-2" style="font-weight: bold;">Stock</label>
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">
-                    <i class="fa-solid fa-layer-group"></i>
-                </span>
-                <input required min="0" id="stock" maxlength="20" name="stock" type="number" class="form-control" placeholder="Stock" aria-label="Username" aria-describedby="basic-addon1">
-            </div>
-            <span class="stock_error msgError" style="color:red;"></span>
-        </div>
-
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-2">
-            <label class="required_field mb-2" for="unidad" style="font-weight: bold;">UNIDAD</label>
-            <select required name="id_unidad" required class="form-select select2_form" id="unidad" data-placeholder="Seleccionar">
-                <option></option>
-                @foreach ($unidades as $unidad)
-                <option value="{{$unidad->id}}">{{$unidad->descripcion}}</option>
-                @endforeach
-            </select>
-            <span class="unidad_error msgError" style="color:red;"></span>
-        </div>
+<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-2">
+    <label for="costo" class="required_field mb-2 fw-bold">Costo</label>
+    <div class="input-group mb-3">
+        <span class="input-group-text">
+            <i class="fa-solid fa-dollar-sign"></i>
+        </span>
+        <input value="1.00" required id="costo" name="costo" type="number" min="0" step="0.01" class="form-control" placeholder="Costo" aria-label="Costo">
     </div>
+    <span class="costo_error msgError text-danger"></span>
+</div>
+
+<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-2">
+    <label for="precio" class="required_field mb-2 fw-bold">Precio</label>
+    <div class="input-group mb-3">
+        <span class="input-group-text">
+            <i class="fa-solid fa-dollar-sign"></i>
+        </span>
+        <input value="1.00" required id="precio" name="precio" type="number" min="0" step="0.01" class="form-control" placeholder="Precio" aria-label="Precio">
+    </div>
+    <span class="precio_error msgError text-danger"></span>
+</div>
+
+<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-2">
+    <label for="stock" class="required_field mb-2 fw-bold">Stock</label>
+    <div class="input-group mb-3">
+        <span class="input-group-text">
+            <i class="fa-solid fa-boxes-stacked"></i>
+        </span>
+        <input required id="stock" name="stock" type="number" min="0" class="form-control" placeholder="Stock" aria-label="Stock">
+    </div>
+    <span class="stock_error msgError text-danger"></span>
+</div>
+
+<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-2">
+    <label for="unidad" class="required_field mb-2 fw-bold">Unidad</label>
+    <select required name="id_unidad" id="unidad" class="form-select select2_form" data-placeholder="Seleccionar unidad">
+        <option></option>
+        @foreach ($unidades as $unidad)
+            <option value="{{ $unidad->id }}">{{ $unidad->descripcion }}</option>
+        @endforeach
+    </select>
+    <span class="unidad_error msgError text-danger"></span>
+</div>
+
 </form>

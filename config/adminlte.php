@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'Sistema de Ventas 3',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -63,8 +63,8 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
-    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+    'logo' => '<b>Sis</b>Ventas',
+    'logo_img' => 'vendor/adminlte/dist/img/XD.jpg',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
@@ -320,14 +320,8 @@ return [
             'url' => 'admin/blog',
             'can' => 'manage-blog',
         ],
-        [
-            'text' => 'pages',
-            'url' => 'admin/pages',
-            'icon' => 'far fa-fw fa-file',
-            'label' => 4,
-            'label_color' => 'success',
-        ],
-        ['header' => 'account_settings'],
+        
+        ['header' => 'Cuenta de Usuario'],
         [
             'text' => 'profile',
             'url' => 'admin/settings',
@@ -339,7 +333,7 @@ return [
             'icon' => 'fas fa-fw fa-lock',
         ],
         
-        ['header' => 'labels'],
+        ['header' => 'Modulos'],
         [
             'text' => 'CLIENTES',
             'icon_color' => 'red',
@@ -366,7 +360,7 @@ return [
             'url' => 'orden_compras/index',
         ],
         [
-            'text' => 'DETALLES',
+            'text' => 'Especificaciones',
             'icon' => 'fas fa-fw fa-share',
             'submenu' => [
                 [

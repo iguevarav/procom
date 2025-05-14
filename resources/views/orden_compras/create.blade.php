@@ -17,7 +17,7 @@
             <button class="btn btn-danger btnVolver" style="margin-right:5px;" type="button">
                 <i class="fa-solid fa-door-open"></i> VOLVER
             </button>
-            <button class="btn btn-primary" type="submit" form="formRegistrarEmpleado">
+            <button class="btn btn-primary" type="submit" form="formRegistrarOrdenCompra">
                 <i class="fa-solid fa-floppy-disk"></i> REGISTRAR
             </button>
         </div>
