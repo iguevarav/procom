@@ -8,9 +8,9 @@
 </div>
 @endif
 
-
-<form id="formRegistrarCliente" method="post" action="{{ route('clientes.store') }}">
+<form id="formActualizarEmpleado" method="POST" action="{{ route('empleados.update', $empleado->id) }}">
     @csrf
+    @method('PUT')
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-2">
             <label for="nombre" class="required_field mb-2" style="font-weight: bold;">Nombre</label>
@@ -18,7 +18,7 @@
                 <span class="input-group-text" id="basic-addon1">
                     <i class="fa-solid fa-file-signature"></i>
                 </span>
-                <input required id="nombre" maxlength="260" name="nombre" type="text" class="form-control" placeholder="Nombre" aria-label="Username" aria-describedby="basic-addon1">
+                <input required value="{{ $empleado->nombre }}" id="nombre" maxlength="260" name="nombre" type="text" class="form-control" placeholder="Nombre" aria-label="Username" aria-describedby="basic-addon1">
             </div>
             <span class="nombre_error msgError" style="color:red;"></span>
         </div>
@@ -29,6 +29,9 @@
                 <option></option>
                 @foreach ($tipos_documento as $tipodoc)
                 <option
+                    @if ($empleado->tipo_documento_id === $tipodoc->id)
+                    selected
+                    @endif
                     value="{{$tipodoc->id}}">{{$tipodoc->descripcion}}</option>
                 @endforeach
             </select>
@@ -37,27 +40,32 @@
         </div>
 
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-2">
+            <label class="required_field mb-2" for="cargo" style="font-weight: bold;">Cargo</label>
+            <select required name="cargo_id" class="form-select select2_form" id="cargo" data-placeholder="Seleccionar">
+                <option></option>
+                @foreach ($cargos as $cargo)
+                <option
+                    @if ($empleado->cargo_id === $cargo->id)
+                    selected    
+                    @endif
+                    value="{{$cargo->id}}">{{$cargo->descripcion}}</option>
+                @endforeach
+            </select>
+            <span class="cargo_error msgError" style="color:red;"></span>
+        </div>
+
+
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-2">
             <label for="numero_documento" class="required_field mb-2" style="font-weight: bold;">N° Documento</label>
             <div class="input-group mb-3">
                 <span class="input-group-text" id="basic-addon1">
                     <i class="fa-solid fa-file-signature"></i>
                 </span>
-                <input required id="numero_documento" maxlength="260" name="numero_documento" type="text" class="form-control" placeholder="N° Documento" aria-label="Username" aria-describedby="basic-addon1">
+                <input required value="{{ $empleado -> numero_documento }}" id="numero_documento" maxlength="260" name="numero_documento" type="text" class="form-control" placeholder="N° Documento" aria-label="Username" aria-describedby="basic-addon1">
             </div>
             <span class="numero_documento_error msgError" style="color:red;"></span>
         </div>
 
-
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-2">
-            <label for="email" class="required_field mb-2" style="font-weight: bold;">Email</label>
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">
-                    <i class="fa-solid fa-file-signature"></i>
-                </span>
-                <input required id="email" maxlength="260" name="email" type="text" class="form-control" placeholder="Email" aria-label="Username" aria-describedby="basic-addon1">
-            </div>
-            <span class="email_error msgError" style="color:red;"></span>
-        </div>
 
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-2">
             <label for="telefono" class="required_field mb-2" style="font-weight: bold;">Telefono</label>
@@ -65,12 +73,12 @@
                 <span class="input-group-text" id="basic-addon1">
                     <i class="fa-solid fa-file-signature"></i>
                 </span>
-                <input required id="telefono" maxlength="15" name="telefono" type="tel" class="form-control"
+                <input required value = "{{ $empleado->telefono }}" id="telefono" maxlength="15" name="telefono" type="tel" class="form-control"
                     placeholder="Telefono" aria-label="Username" aria-describedby="basic-addon1" pattern="^\+?[0-9]{1,4}?[-.●]?(\(?\d{1,3}?\)?[-.●]?)?[\d●]{1,4}[-.●]?[0-9]{1,4}[-.●]?[0-9]{1,9}$"
                     title="Introduce un número de teléfono válido">
             </div>
             @error('telefono')
-                <span class="telefono_error msgError" style="color:red;">{{ $message }}</span>
+            <span class="telefono_error msgError" style="color:red;">{{ $message }}</span>
             @enderror
         </div>
 
@@ -80,11 +88,10 @@
                 <span class="input-group-text" id="basic-addon1">
                     <i class="fa-solid fa-file-signature"></i>
                 </span>
-                <input required id="direccion" maxlength="260" name="direccion" type="text" class="form-control" placeholder="Direccion" aria-label="Username" aria-describedby="basic-addon1">
+                <input required value= "{{ $empleado->direccion }}"id="direccion" maxlength="260" name="direccion" type="text" class="form-control" placeholder="Direccion" aria-label="Username" aria-describedby="basic-addon1">
             </div>
             <span class="direccion_error msgError" style="color:red;"></span>
         </div>
-
 
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-2">
             <label for="fecha_nacimiento" class="required_field mb-2" style="font-weight: bold;">Fecha Nacimiento</label>
@@ -92,9 +99,20 @@
                 <span class="input-group-text" id="basic-addon1">
                     <i class="fa-solid fa-file-signature"></i>
                 </span>
-                <input required id="fecha_nacimiento" maxlength="260" name="fecha_nacimiento" type="text" class="form-control" placeholder="DD-MM-YYYY" aria-label="Username" aria-describedby="basic-addon1">
+                <input required value="{{ $empleado->fecha_nacimiento }}" id="fecha_nacimiento" maxlength="260" name="fecha_nacimiento" type="text" class="form-control" placeholder="Fecha Nacimiento" aria-label="Username" aria-describedby="basic-addon1">
             </div>
             <span class="fecha_nacimiento_error msgError" style="color:red;"></span>
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-2">
+            <label for="salario" class="required_field mb-2" style="font-weight: bold;">Salario</label>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">
+                    <i class="fa-solid fa-money-check-dollar"></i>
+                </span>
+                <input required value="{{ $empleado->salario }}"  id="salario" maxlength="20" name="salario" type="text" class="form-control inputDecimalPositivo" placeholder="Salario" aria-label="Username" aria-describedby="basic-addon1">
+            </div>
+            <span class="salario_error msgError" style="color:red;"></span>
         </div>
 
     </div>

@@ -15,8 +15,8 @@
     </button>
 
     <nav class="navbar navbar-light float-right">
-        <form class="form-inline my-lg-0" method="GET">
-            <input name="buscarpor" class="form-control mr-sm-2" type="search" placeholder="Buscar por descripcion" arial-label="Search" value="">
+        <form class="form-inline my-lg-0" method="GET" action="{{ route('categorias.buscar')}}">
+            <input name="buscarpor" class="form-control mr-sm-2" type="search" placeholder="Buscar por descripcion" arial-label="Search" >
             <button class="btn btn-secondary my-sm-0" type="submit">Buscar</button>
         </form>
     </nav>

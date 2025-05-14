@@ -2,21 +2,21 @@
 
 
 @section('content_header')
-<h3 class="container-custom">LISTA DE MARCAS</h3>
+<h3 class="container-custom">LISTA DE CARGOS</h3>
 @endsection
 
 @section('content')
-@include('marcas.modals.modal_create_marca')
-@include('marcas.modals.modal_edit_marca')
+@include('cargos.modals.modal_create_cargo')
+@include('cargos.modals.modal_edit_cargo')
 
 <div class="container-custom">
-    <button class="btn btn-primary" onclick="openModalNuevaMarca()">
+    <button class="btn btn-primary" onclick="openModalNuevoCargo()">
         <i class="fas fa-plus"></i> Registrar
     </button>
 
     <nav class="navbar navbar-light float-right">
-        <form class="form-inline my-lg-0" method="GET" action="{{ route('marcas.buscar')}}">
-            <input name="buscarpor" class="form-control mr-sm-2" type="search" placeholder="Buscar por descripcion" arial-label="Search" value="">
+        <form class="form-inline my-lg-0" method="GET" action="{{ route('cargos.buscar')}}">
+            <input name="buscarpor" class="form-control mr-sm-2" type="search" placeholder="Buscar por descripcion" arial-label="Search">
             <button class="btn btn-secondary my-sm-0" type="submit">Buscar</button>
         </form>
     </nav>
@@ -31,8 +31,8 @@
 
     @endif
     <div class="table-responsive">
-        @include('marcas.tables.table_list_marcas')
+        @include('cargos.tables.table_list_cargos')
     </div>
-    {{$marca->links()}}
+    {{$cargo->links()}}
 </div>
 @endsection

@@ -64,4 +64,19 @@ class MarcaController extends Controller
 
         return redirect()->route('marcas.index')->with('success', 'Marca eliminada correctamente.');
     }
+
+    public function buscar(Request $request)
+    {
+        $buscarPor = $request->input('buscarpor');  
+        if ($buscarPor) {
+            $marca = Marca::where('descripcion', 'LIKE', '%' . $buscarPor . '%')
+                ->where('estado', 'ACTIVO') 
+                ->paginate(10);
+        } else {
+            $marca = Marca::where('estado', 'ACTIVO')
+                ->paginate(10);
+        }
+
+        return view('marcas.index', compact('marca'));
+    }
 }

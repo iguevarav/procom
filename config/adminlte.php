@@ -346,9 +346,24 @@ return [
             'url' => 'clientes/index',
         ],
         [
+            'text' => 'EMPLEADOS',
+            'icon_color' => 'red',
+            'url' => 'empleados/index',
+        ],
+        [
             'text' => 'PRODUCTOS',
             'icon_color' => 'yellow',
             'url' => 'productos/index',
+        ],
+        [
+            'text' => 'PROVEEDORES',
+            'icon_color' => 'red',
+            'url' => 'proveedores/index',
+        ],
+        [
+            'text' => 'ORDENES DE COMPRA',
+            'icon_color' => 'blue',
+            'url' => 'orden_compras/index',
         ],
         [
             'text' => 'DETALLES',
@@ -365,6 +380,10 @@ return [
                 [
                     'text' => 'Unidades',
                     'url' => 'unidades/index',
+                ],
+                [
+                    'text' => 'Cargos',
+                    'url' => 'cargos/index',
                 ],
             ],
         ],

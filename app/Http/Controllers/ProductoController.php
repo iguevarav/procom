@@ -100,4 +100,18 @@ class ProductoController extends Controller
 
         return redirect()->route('productos.index')->with('success', 'Producto eliminado correctamente.');
     }
+    public function buscar(Request $request)
+    {
+        $buscarPor = $request->input('buscarpor');  
+        if ($buscarPor) {
+            $producto = Producto::where('nombre', 'LIKE', '%' . $buscarPor . '%')
+                ->where('estado', 'ACTIVO') 
+                ->paginate(10);
+        } else {
+            $producto = Producto::where('estado', 'ACTIVO')
+                ->paginate(10);
+        }
+
+        return view('productos.index', compact('producto'));
+    }
 }

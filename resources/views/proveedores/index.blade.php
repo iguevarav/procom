@@ -1,16 +1,16 @@
 @extends ('admin.dashboard')
 
 @section('content_header')
-    <h3 class="container-custom"  >LISTA DE PRODUCTOS</h3>
+    <h3 class="container-custom"  >LISTA DE PROVEEDORES</h3>
 @endsection
 
 @section('content')
 <div class="container-custom">
-    <a href="{{route('productos.create')}}" class="btn btn-primary"><i class="fas fa-plus"></i> Registrar</a>
+    <a href="{{route('proveedores.create')}}" class="btn btn-primary"><i class="fas fa-plus"></i> Registrar</a>
 
     <nav class="navbar navbar-light float-right">
-        <form class="form-inline my-lg-0" method="GET" action="{{ route('productos.buscar')}}">
-            <input name="buscarpor" class="form-control mr-sm-2" type="search" placeholder="Buscar por nombre" arial-label="Search" value="">
+        <form class="form-inline my-lg-0" method="GET" action="{{ route('proveedores.buscar')}}">
+            <input name="buscarpor" class="form-control mr-sm-2" type="search" placeholder="Buscar por nombre" arial-label="Search" id="searchInput">
             <button class="btn btn-secondary my-sm-0" type="submit">Buscar</button>
         </form>
     </nav>
@@ -23,9 +23,13 @@
         </button>
     </div>
     @endif
+
+
     <table class="table-responsive">
-        @include('productos.tables.table_list_productos')
+        @include('proveedores.tables.table_list_proveedores')
     </table>
-    {{$producto->links()}}
+
+
+    {{$proveedor->links()}}
 </div>
 @endsection

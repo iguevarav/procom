@@ -9,7 +9,7 @@
 @endif
 
 
-<form id="formRegistrarCliente" method="post" action="{{ route('clientes.store') }}">
+<form id="formRegistrarEmpleado" method="post" action="{{ route('empleados.store') }}">
     @csrf
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-2">
@@ -24,7 +24,7 @@
         </div>
 
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-2">
-            <label class="required_field mb-2" for="categoria" style="font-weight: bold;">Tipo Documento</label>
+            <label class="required_field mb-2" for="tipo_documento" style="font-weight: bold;">Tipo Documento</label>
             <select required name="tipo_documento_id" class="form-select select2_form" id="tipo_documento" data-placeholder="Seleccionar">
                 <option></option>
                 @foreach ($tipos_documento as $tipodoc)
@@ -37,6 +37,18 @@
         </div>
 
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-2">
+            <label class="required_field mb-2" for="cargo" style="font-weight: bold;">Cargo</label>
+            <select required name="cargo_id" class="form-select select2_form" id="cargo" data-placeholder="Seleccionar">
+                <option></option>
+                @foreach ($cargos as $cargo)
+                <option
+                    value="{{$cargo->id}}">{{$cargo->descripcion}}</option>
+                @endforeach
+            </select>
+            <span class="cargo_error msgError" style="color:red;"></span>
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-2">
             <label for="numero_documento" class="required_field mb-2" style="font-weight: bold;">N° Documento</label>
             <div class="input-group mb-3">
                 <span class="input-group-text" id="basic-addon1">
@@ -45,18 +57,6 @@
                 <input required id="numero_documento" maxlength="260" name="numero_documento" type="text" class="form-control" placeholder="N° Documento" aria-label="Username" aria-describedby="basic-addon1">
             </div>
             <span class="numero_documento_error msgError" style="color:red;"></span>
-        </div>
-
-
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-2">
-            <label for="email" class="required_field mb-2" style="font-weight: bold;">Email</label>
-            <div class="input-group mb-3">
-                <span class="input-group-text" id="basic-addon1">
-                    <i class="fa-solid fa-file-signature"></i>
-                </span>
-                <input required id="email" maxlength="260" name="email" type="text" class="form-control" placeholder="Email" aria-label="Username" aria-describedby="basic-addon1">
-            </div>
-            <span class="email_error msgError" style="color:red;"></span>
         </div>
 
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-2">
@@ -92,9 +92,20 @@
                 <span class="input-group-text" id="basic-addon1">
                     <i class="fa-solid fa-file-signature"></i>
                 </span>
-                <input required id="fecha_nacimiento" maxlength="260" name="fecha_nacimiento" type="text" class="form-control" placeholder="DD-MM-YYYY" aria-label="Username" aria-describedby="basic-addon1">
+                <input required id="fecha_nacimiento" maxlength="260" name="fecha_nacimiento" type="text" class="form-control" placeholder="YYYY-MM-DD" aria-label="Username" aria-describedby="basic-addon1">
             </div>
             <span class="fecha_nacimiento_error msgError" style="color:red;"></span>
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 pb-2">
+            <label for="salario" class="required_field mb-2" style="font-weight: bold;">Salario</label>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">
+                    <i class="fa-solid fa-money-check-dollar"></i>
+                </span>
+                <input value="1000.00" required id="salario" maxlength="20" name="salario" type="text" class="form-control inputDecimalPositivo" placeholder="Salario" aria-label="Username" aria-describedby="basic-addon1">
+            </div>
+            <span class="salario_error msgError" style="color:red;"></span>
         </div>
 
     </div>

@@ -3,20 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Cliente;
-use App\Models\Tipo_Documento;
-class ClienteController extends Controller
-{
-    const PAGINATION = 10;
+use App\Models\Empleado;
+use App\Models\Tipo_Documento;  
+use App\Models\Cargo;
 
-    public function index() {
-        $cliente = Cliente::where('estado', '=', 'ACTIVO')->paginate($this::PAGINATION);
-        return view('clientes.index', compact('cliente'));
+class EmpleadoController extends Controller
+{
+    const PAGINATION = 10; 
+
+    public function index(){
+        $empleado = Empleado::where('estado', '=', 'ACTIVO')->paginate($this::PAGINATION);
+        return view('empleados.index', compact('empleado'));
     }
 
-    public function create() {
+    public function create(){
         $tipos_documento = Tipo_Documento::where('estado', '=', 'ACTIVO')->get();
-        return view('clientes.create', compact('tipos_documento'));
+        $cargos = Cargo::where('estado', '=', 'ACTIVO')->get();
+        return view('empleados.create', compact('tipos_documento', 'cargos'));
     }
 
     public function store(Request $request)
@@ -24,33 +27,36 @@ class ClienteController extends Controller
         $request->validate([
             'nombre' => 'required|max:255',
             'tipo_documento_id' => 'required|exists:tipos_documento,id',
+            'cargo_id' => 'required|exists:cargos,id',
             'numero_documento' => 'required|max:255',
-            'email' => 'required|max:255',
             'telefono' => 'required|regex:/^\+?[0-9]{1,4}?[-.●]?(\(?\d{1,3}?\)?[-.●]?)?[\d●]{1,4}[-.●]?[0-9]{1,4}[-.●]?[0-9]{1,9}$/',
             'direccion' => 'required|max:255',
-            'fecha_nacimiento' => 'required|date',
+            'fecha_nacimiento' => 'required|date_format:Y-m-d',
+            'salario' => 'required|numeric',
         ]);
 
-        $cliente = Cliente::create([
+        $empleado = Empleado::create([
             'nombre' => $request->nombre,
             'tipo_documento_id' => $request->tipo_documento_id,
+            'cargo_id'=> $request->cargo_id,
             'numero_documento' => $request->numero_documento,
-            'email' => $request->email,
             'telefono' => $request->telefono,
             'direccion' => $request->direccion,
             'fecha_nacimiento' => $request->fecha_nacimiento,
+            'salario'=> $request->salario,
             'estado' => 'ACTIVO'
         ]);
 
-        return redirect()->route('clientes.index')->with('success', 'Cliente registrado correctamente.');
+        return redirect()->route('empleados.index')->with('success', 'Empleado registrado correctamente.');
     }
 
     public function edit($id)
     {
         $tipos_documento     =   Tipo_Documento::where('estado', 'ACTIVO')->get();
-        $cliente            =   Cliente::find($id);
+        $cargos              =   Cargo::where('estado', 'ACTIVO')->get();
+        $empleado           =   Empleado::find($id);
 
-        return view('clientes.edit', compact( 'tipos_documento', 'cliente'));
+        return view('empleados.edit', compact( 'tipos_documento', 'cargos','empleado'));
     }
 
     public function update(Request $request, $id)
@@ -58,50 +64,54 @@ class ClienteController extends Controller
         $request->validate([
             'nombre' => 'required|max:255',
             'tipo_documento_id' => 'required|exists:tipos_documento,id',
+            'cargo_id' => 'required|exists:cargos,id',
             'numero_documento' => 'required|max:255',
-            'email' => 'required|max:255',
-            'telefono' => 'required|max:255',
+            'telefono' => 'required|regex:/^\+?[0-9]{1,4}?[-.●]?(\(?\d{1,3}?\)?[-.●]?)?[\d●]{1,4}[-.●]?[0-9]{1,4}[-.●]?[0-9]{1,9}$/',
             'direccion' => 'required|max:255',
-            'fecha_nacimiento' => 'required|date_format:d-m-Y',
+            'fecha_nacimiento' => 'required|date_format:Y-m-d',
+            'salario' => 'required|numeric',
         ]);
 
-        $cliente = Cliente::findOrFail($id);
+        $empleado = Empleado::findOrFail($id);
 
-        $cliente->update([
+        $empleado->update([
             'nombre' => $request->nombre,
             'tipo_documento_id' => $request->tipo_documento_id,
+            'cargo_id'=> $request->cargo_id,
             'numero_documento' => $request->numero_documento,
-            'email' => $request->email,
             'telefono' => $request->telefono,
             'direccion' => $request->direccion,
             'fecha_nacimiento' => $request->fecha_nacimiento,
+            'salario'=> $request->salario,
+            'estado' => 'ACTIVO'
         ]);
 
-        return redirect()->route('clientes.index')->with('success', 'Registro actualizado correctamente.');
+        return redirect()->route('empleados.index')->with('success', 'Registro actualizado correctamente.');
     }
     public function destroy($id)
     {
-        $cliente = Cliente::findOrFail($id);
+        $empleado = Empleado::findOrFail($id);
 
-        $cliente->estado = 'ANULADO';
-        $cliente->save();
+        $empleado->estado = 'ANULADO';
+        $empleado->save();
 
-        return redirect()->route('clientes.index')->with('success', 'Registro eliminado correctamente.');
+        return redirect()->route('empleados.index')->with('success', 'Registro eliminado correctamente.');
     }
 
     public function buscar(Request $request)
     {
         $buscarPor = $request->input('buscarpor');  
         if ($buscarPor) {
-            $cliente = Cliente::where('nombre', 'LIKE', '%' . $buscarPor . '%')
+            $empleado = Empleado::where('nombre', 'LIKE', '%' . $buscarPor . '%')
                 ->orWhere('numero_documento', 'LIKE', '%' . $buscarPor . '%')
                 ->where('estado', 'ACTIVO') 
                 ->paginate(10);
         } else {
-            $cliente = Cliente::where('estado', 'ACTIVO')
+            $empleado = Empleado::where('estado', 'ACTIVO')
                 ->paginate(10);
         }
 
-        return view('clientes.index', compact('cliente'));
+        return view('empleados.index', compact('empleado'));
     }
+
 }

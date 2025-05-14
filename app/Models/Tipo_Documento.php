@@ -17,4 +17,8 @@ class Tipo_Documento extends Model
     public function clientes(){
        return $this -> hasMany(Cliente::class,'tipo_documento_id','id');
     }
+
+    public function empleados(){
+        return $this -> hasMany(Empleado::class,'tipo_documento_id','id');
+    }
 }

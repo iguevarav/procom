@@ -9,7 +9,7 @@
     <a href="{{route('clientes.create')}}" class="btn btn-primary"><i class="fas fa-plus"></i> Registrar</a>
 
     <nav class="navbar navbar-light float-right">
-        <form class="form-inline my-lg-0" method="GET">
+        <form class="form-inline my-lg-0" method="GET" action="{{ route('clientes.buscar')}}">
             <input name="buscarpor" class="form-control mr-sm-2" type="search" placeholder="Buscar por nombre" arial-label="Search" value="">
             <button class="btn btn-secondary my-sm-0" type="submit">Buscar</button>
         </form>

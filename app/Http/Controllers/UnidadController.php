@@ -64,4 +64,19 @@ class UnidadController extends Controller
 
         return redirect()->route('unidades.index')->with('success', 'Unidad eliminada correctamente.');
     }
+
+    public function buscar(Request $request)
+    {
+        $buscarPor = $request->input('buscarpor');  
+        if ($buscarPor) {
+            $unidad = Unidad::where('descripcion', 'LIKE', '%' . $buscarPor . '%')
+                ->where('estado', 'ACTIVO') 
+                ->paginate(10);
+        } else {
+            $unidad = Unidad::where('estado', 'ACTIVO')
+                ->paginate(10);
+        }
+
+        return view('unidades.index', compact('unidad'));
+    }
 }

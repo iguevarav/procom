@@ -64,4 +64,19 @@ class CategoriaController extends Controller
 
         return redirect()->route('categorias.index')->with('success', 'Categoria eliminada correctamente.');
     }
+
+    public function buscar(Request $request)
+    {
+        $buscarPor = $request->input('buscarpor');  
+        if ($buscarPor) {
+            $categoria = Categoria::where('descripcion', 'LIKE', '%' . $buscarPor . '%')
+                ->where('estado', 'ACTIVO') 
+                ->paginate(10);
+        } else {
+            $categoria = Categoria::where('estado', 'ACTIVO')
+                ->paginate(10);
+        }
+
+        return view('categorias.index', compact('categoria'));
+    }
 }
