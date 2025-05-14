@@ -28,7 +28,7 @@ class ClienteController extends Controller
             'email' => 'required|max:255',
             'telefono' => 'required|regex:/^\+?[0-9]{1,4}?[-.●]?(\(?\d{1,3}?\)?[-.●]?)?[\d●]{1,4}[-.●]?[0-9]{1,4}[-.●]?[0-9]{1,9}$/',
             'direccion' => 'required|max:255',
-            'fecha_nacimiento' => 'required|date',
+            'fecha_nacimiento' => 'required|date_format:Y-m-d',
         ]);
 
         $cliente = Cliente::create([
@@ -62,7 +62,7 @@ class ClienteController extends Controller
             'email' => 'required|max:255',
             'telefono' => 'required|max:255',
             'direccion' => 'required|max:255',
-            'fecha_nacimiento' => 'required|date_format:d-m-Y',
+            'fecha_nacimiento' => 'required|date_format:Y-m-d',
         ]);
 
         $cliente = Cliente::findOrFail($id);
