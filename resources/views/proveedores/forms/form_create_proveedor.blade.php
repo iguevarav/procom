@@ -30,7 +30,7 @@
                 <span class="input-group-text" id="basic-addon1">
                     <i class="fa-solid fa-file-signature"></i>
                 </span>
-                <input required id="ruc" maxlength="260" name="ruc" type="text" class="form-control" placeholder="RUC" aria-label="Username" aria-describedby="basic-addon1">
+                <input required id="ruc" maxlength="11" name="ruc" type="text" class="form-control" placeholder="RUC" aria-label="Username" aria-describedby="basic-addon1">
             </div>
             <span class="ruc_error msgError" style="color:red;"></span>
         </div>
@@ -55,12 +55,12 @@
                 <span class="input-group-text" id="basic-addon1">
                     <i class="fa-solid fa-file-signature"></i>
                 </span>
-                <input required id="telefono" maxlength="15" name="telefono" type="tel" class="form-control"
-                    placeholder="Telefono" aria-label="Username" aria-describedby="basic-addon1" pattern="^\+?[0-9]{1,4}?[-.●]?(\(?\d{1,3}?\)?[-.●]?)?[\d●]{1,4}[-.●]?[0-9]{1,4}[-.●]?[0-9]{1,9}$"
-                    title="Introduce un número de teléfono válido">
+                <input required id="telefono" maxlength="9" name="telefono" type="tel" class="form-control"
+                    placeholder="Teléfono" pattern="[0-9]{9}" title="Introduce un número de 9 dígitos" aria-label="Username" aria-describedby="basic-addon1">
+
             </div>
             @error('telefono')
-                <span class="telefono_error msgError" style="color:red;">{{ $message }}</span>
+            <span class="telefono_error msgError" style="color:red;">{{ $message }}</span>
             @enderror
         </div>
 
@@ -88,3 +88,9 @@
 
     </div>
 </form>
+
+<script>
+document.getElementById("telefono").addEventListener("input", function (e) {
+    this.value = this.value.replace(/\D/g, "").slice(0, 9);
+});
+</script>

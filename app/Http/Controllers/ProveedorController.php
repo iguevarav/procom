@@ -27,9 +27,9 @@ class ProveedorController extends Controller
     {
         $request->validate([
             'razon_social' => 'required|max:255',
-            'ruc' => 'required|max:255', //falta agregar vaidacion y manejo de errores
+            'ruc' => 'required|digits:11', 
             'tipo_proveedor_id' => 'required|exists:tipos_proveedor,id',
-            'telefono' => 'required|regex:/^\+?[0-9]{1,4}?[-.●]?(\(?\d{1,3}?\)?[-.●]?)?[\d●]{1,4}[-.●]?[0-9]{1,4}[-.●]?[0-9]{1,9}$/',
+            'telefono' => 'required|digits:9',
             'email' => 'required|max:255',
             'direccion' => 'required|max:255',
         ]);
@@ -58,9 +58,9 @@ class ProveedorController extends Controller
     {
         $request->validate([
             'razon_social' => 'required|max:255',
-            'ruc' => 'required|max:255',
+            'ruc' => 'required|digits:11',
             'tipo_proveedor_id' => 'required|exists:tipos_proveedor,id',
-            'telefono' => 'required|regex:/^\+?[0-9]{1,4}?[-.●]?(\(?\d{1,3}?\)?[-.●]?)?[\d●]{1,4}[-.●]?[0-9]{1,4}[-.●]?[0-9]{1,9}$/',
+            'telefono' => 'required|digits:9',
             'email' => 'required|max:255',
             'direccion' => 'required|max:255',
         ]);
