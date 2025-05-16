@@ -26,8 +26,8 @@ class Producto extends Model
         return $this -> hasOne(Unidad::class,'id','id_unidad');
     }
 
-    public function detalleOrdenCompras()
+    public function detallesOrdenCompra()
     {
-        return $this->hasMany(Detalle_Orden_Compra::class, 'orden_compra_id', 'id');
+        return $this->hasMany(OrdenCompraDetalle::class, 'producto_id');
     }
 }

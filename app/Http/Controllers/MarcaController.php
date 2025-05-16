@@ -14,10 +14,6 @@ class MarcaController extends Controller
         return view('marcas.index', compact('marca'));
     }
 
-    // public function create()
-    // {
-    //     return view('marcas.create');
-    // }
 
     public function store(Request $request)
     {

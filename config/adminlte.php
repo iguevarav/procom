@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'Sistema de Ventas 3',
+    'title' => 'Sistema de Compras',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>Sis</b>Ventas',
+    'logo' => '<b>SISGECOM</b>',
     'logo_img' => 'vendor/adminlte/dist/img/XD.jpg',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -257,7 +257,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => 'dashboard',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -320,7 +320,6 @@ return [
             'url' => 'admin/blog',
             'can' => 'manage-blog',
         ],
-<<<<<<< HEAD
         
         ['header' => 'Cuenta de Usuario'],
         [
@@ -335,22 +334,6 @@ return [
         ],
         
         ['header' => 'Modulos'],
-=======
-
-        // ['header' => 'account_settings'],
-        // [
-        //     'text' => 'profile',
-        //     'url' => 'admin/settings',
-        //     'icon' => 'fas fa-fw fa-user',
-        // ],
-        // [
-        //     'text' => 'change_password',
-        //     'url' => 'admin/settings',
-        //     'icon' => 'fas fa-fw fa-lock',
-        // ],
-        
-        ['header' => 'Registros'],
->>>>>>> 33e18bd7d54a80cac61b643089d2078d8a40ce83
         [
             'text' => 'Clientes',
             'icon' => 'fas fa-fw fa-user',
@@ -376,18 +359,13 @@ return [
         [
             'text' => 'ORDENES DE COMPRA',
             'icon' => 'fas fa-fw fa-file',
-            'url' => 'orden_compras/index',
+            'url' => 'orden_compra/index',
         ],
 
         ['header' => 'Detalles'],
         [
-<<<<<<< HEAD
             'text' => 'Especificaciones',
             'icon' => 'fas fa-fw fa-share',
-=======
-            'text' => 'Adicionales',
-            'icon' => 'fas fa-fw fa-circle-info',
->>>>>>> 33e18bd7d54a80cac61b643089d2078d8a40ce83
             'submenu' => [
                 [
                     'text' => 'Categorias',

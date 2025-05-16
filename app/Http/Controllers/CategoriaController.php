@@ -14,10 +14,6 @@ class CategoriaController extends Controller
         return view('categorias.index', compact('categoria'));
     }
 
-    // public function create()
-    // {
-    //     return view('categorias.create');
-    // }
 
     public function store(Request $request)
     {

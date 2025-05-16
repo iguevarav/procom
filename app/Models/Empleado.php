@@ -32,9 +32,9 @@ class Empleado extends Model
         return $this->belongsTo(Cargo::class, 'cargo_id');
     }   
 
-    public function ordenCompra(){
-        return $this->hasMany(Orden_Compra::class, 'empleado_id', 'id');
+    public function ordenesCompra()
+    {
+        return $this->hasMany(OrdenCompra::class, 'empleado_id');
     }
-
     
 }

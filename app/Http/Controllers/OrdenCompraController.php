@@ -3,23 +3,25 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Orden_Compra;
+use App\Models\OrdenCompra;
+use App\Models\OrdenCompraDetalle;
 use App\Models\Empleado;
 use App\Models\Proveedor;
 use App\Models\Producto;
-use App\Models\Detalle_Orden_Compra;
 
 class OrdenCompraController extends Controller
 {
-    const PAGINATION = 10;
-
     public function index()
     {
-        $orden_compra = Orden_Compra::where('estado', '!=', '0')
-            ->with('empleado', 'proveedor', 'detalle_orden_compras.producto')
-            ->paginate(self::PAGINATION);
+        $ordenes = OrdenCompra::with(['empleado', 'proveedor'])->paginate(10);
+        return view('orden_compra.index', compact('ordenes'));
+    }
 
-        return view('orden_compras.index', compact('orden_compra'));
+    private function generateOrderNumber()
+    {
+        $last = OrdenCompra::orderBy('id', 'desc')->first();
+        $next = $last ? $last->id + 1 : 1;
+        return 'OC-' . str_pad($next, 6, '0', STR_PAD_LEFT);
     }
 
     public function create()
@@ -27,8 +29,7 @@ class OrdenCompraController extends Controller
         $empleados = Empleado::all();
         $proveedores = Proveedor::all();
         $productos = Producto::all();
-
-        return view('orden_compras.create', compact('empleados', 'proveedores', 'productos'));
+        return view('orden_compra.create', compact('empleados', 'proveedores', 'productos'));
     }
 
     public function store(Request $request)
@@ -38,133 +39,141 @@ class OrdenCompraController extends Controller
             'proveedor_id' => 'required|exists:proveedores,id',
             'fecha_compra' => 'required|date',
             'motivo_compra' => 'required|string|max:255',
-            'producto_id' => 'required|array',
-            'cantidad' => 'required|array',
-            'precio_unitario' => 'required|array',
+            'productos' => 'required|array|min:1',
+            'productos.*.producto_id' => 'required|exists:productos,id',
+            'productos.*.cantidad' => 'required|integer|min:1',
+            'productos.*.precio_unitario' => 'required|numeric|min:0',
         ]);
 
-        $orden_compra = Orden_Compra::create([
-            'proveedor_id' => $request->proveedor_id,
-            'empleado_id' => $request->empleado_id,
-            'numero_documento' => $this->generateOrderNumber(),
-            'fecha_compra' => $request->fecha_compra,
-            'motivo_compra' => $request->motivo_compra,
-            'subtotal' => 0,
-            'estado' => 'pendiente'
-        ]);
+        $numeroDocumento = $this->generateOrderNumber();
 
-        $totalCompra = 0;
-
-        foreach ($request->producto_id as $key => $productoId) {
-            $precio = $request->precio_unitario[$key];
-            $cantidad = $request->cantidad[$key];
-
-            Detalle_Orden_Compra::create([
-                'orden_compra_id' => $orden_compra->id,
-                'producto_id' => $productoId,
-                'cantidad' => $cantidad,
-                'precio_unitario' => $precio,
-                'subtotal_item' => $cantidad * $precio
-            ]);
-
-            $totalCompra += $cantidad * $precio;
+        $subtotal = 0;
+        foreach ($request->productos as $item) {
+            $subtotal += $item['cantidad'] * $item['precio_unitario'];
         }
 
-        $orden_compra->update(['subtotal' => $totalCompra]);
+        $orden = OrdenCompra::create([
+            'numero_documento' => $numeroDocumento,
+            'empleado_id' => $request->empleado_id,
+            'proveedor_id' => $request->proveedor_id,
+            'fecha_compra' => $request->fecha_compra,
+            'motivo_compra' => $request->motivo_compra,
+            'subtotal' => $subtotal,
+            'estado' => 'pendiente',
+        ]);
 
-        return redirect()->route('orden_compras.index')->with('success', 'Orden de compra registrada con éxito');
+        foreach ($request->productos as $item) {
+            $orden->detalles()->create([
+                'producto_id' => $item['producto_id'],
+                'cantidad' => $item['cantidad'],
+                'precio_unitario' => $item['precio_unitario'],
+                'subtotal' => $item['cantidad'] * $item['precio_unitario'],
+            ]);
+        }
+
+        return redirect()->route('orden_compra.index')->with('success', 'Orden creada correctamente');
     }
 
-    public function edit(Orden_Compra $orden_compra)
-    {
-        $empleados = Empleado::all();
-        $proveedores = Proveedor::all();
-        $productos = Producto::all();
+    public function show($id)
+     {
+         $orden = OrdenCompra::with(['empleado', 'proveedor', 'detalles.producto'])->findOrFail($id);
+         return view('orden_compra.show', compact('orden'));
+     }
 
-        return view('orden_compras.edit', compact('orden_compra', 'empleados', 'proveedores', 'productos'));
+
+    public function edit($id)
+    {
+        $orden = OrdenCompra::with('detalles.producto')->findOrFail($id);
+        $empleados = Empleado::where('estado', 'ACTIVO')->get();
+        $proveedores = Proveedor::where('estado', 'ACTIVO')->get();
+        $productos = Producto::where('estado', 'ACTIVO')->get();
+
+        return view('orden_compra.edit', compact('orden', 'empleados', 'proveedores', 'productos'));
     }
 
-    public function update(Request $request, Orden_Compra $orden_compra)
+    public function update(Request $request, $id)
     {
+        // Validar datos principales
         $request->validate([
             'empleado_id' => 'required|exists:empleados,id',
             'proveedor_id' => 'required|exists:proveedores,id',
             'fecha_compra' => 'required|date',
             'motivo_compra' => 'required|string|max:255',
-            'producto_id' => 'required|array',
-            'cantidad' => 'required|array',
-            'precio_unitario' => 'required|array',
+            'productos' => 'required|array|min:1',
+            'productos.*.producto_id' => 'required|exists:productos,id',
+            'productos.*.cantidad' => 'required|numeric|min:1',
+            'productos.*.precio_unitario' => 'required|numeric|min:0',
         ]);
 
-        $orden_compra->update([
-            'empleado_id' => $request->empleado_id,
-            'proveedor_id' => $request->proveedor_id,
-            'fecha_compra' => $request->fecha_compra,
-            'motivo_compra' => $request->motivo_compra,
-            'subtotal' => 0
-        ]);
+        // Buscar orden
+        $orden = OrdenCompra::findOrFail($id);
 
-        $orden_compra->detalle_orden_compras()->delete();
+        // Actualizar datos principales
+        $orden->empleado_id = $request->empleado_id;
+        $orden->proveedor_id = $request->proveedor_id;
+        $orden->fecha_compra = $request->fecha_compra;
+        $orden->motivo_compra = $request->motivo_compra;
 
-        $totalCompra = 0;
+        // Calcular subtotal total
+        $subtotal = 0;
+        foreach ($request->productos as $producto) {
+            $subtotal += $producto['cantidad'] * $producto['precio_unitario'];
+        }
+        $orden->subtotal = $subtotal;
 
-        foreach ($request->producto_id as $key => $productoId) {
-            $precio = $request->precio_unitario[$key];
-            $cantidad = $request->cantidad[$key];
+        $orden->save();
 
-            Detalle_Orden_Compra::create([
-                'orden_compra_id' => $orden_compra->id,
-                'producto_id' => $productoId,
-                'cantidad' => $cantidad,
-                'precio_unitario' => $precio,
-                'subtotal_item' => $cantidad * $precio
+        // Actualizar detalles
+
+        // Primero, eliminar detalles existentes para evitar duplicados
+        $orden->detalles()->delete();
+
+        // Insertar nuevos detalles
+        foreach ($request->productos as $producto) {
+            $orden->detalles()->create([
+                'producto_id' => $producto['producto_id'],
+                'cantidad' => $producto['cantidad'],
+                'precio_unitario' => $producto['precio_unitario'],
+                'subtotal' => $producto['cantidad'] * $producto['precio_unitario'],
             ]);
-
-            $totalCompra += $cantidad * $precio;
         }
 
-        $orden_compra->update(['subtotal' => $totalCompra]);
-
-        return redirect()->route('orden_compras.index')->with('success', 'Orden de compra actualizada con éxito');
+        return redirect()->route('orden_compra.index')->with('success', 'Orden de compra actualizada correctamente.');
     }
 
-    public function destroy(Orden_Compra $orden_compra)
+    public function destroy($id)
     {
-        $orden_compra->update(['estado' => '0']);
+        $orden = OrdenCompra::findOrFail($id);
 
-        return redirect()->route('orden_compras.index')->with('success', 'Orden de compra desactivada con éxito');
-    }
+        // Eliminar detalles relacionados primero para mantener integridad
+        $orden->detalles()->delete();
 
-    private function generateOrderNumber()
-    {
-        $year = date('Y');
+        // Eliminar la orden
+        $orden->delete();
 
-        do {
-            $lastOrder = Orden_Compra::whereYear('created_at', $year)->orderByDesc('id')->first();
-            $lastNumber = $lastOrder ? intval(substr($lastOrder->numero_documento, -3)) : 0;
-            $nextNumber = str_pad($lastNumber + 1, 3, '0', STR_PAD_LEFT);
-            $newNumber = "OC-$year-$nextNumber";
-        } while (Orden_Compra::where('numero_documento', $newNumber)->exists());
-
-        return $newNumber;
+        return redirect()->route('orden_compra.index')->with('success', 'Orden de compra eliminada correctamente.');
     }
 
     public function buscar(Request $request)
     {
-        $buscarPor = $request->input('buscarpor');
+        $query = OrdenCompra::query()->with(['empleado', 'proveedor']);
 
-        if ($buscarPor) {
-            $orden_compra = Orden_Compra::where('numero_documento', 'LIKE', "%$buscarPor%")
-                ->orWhereHas('empleado', function ($query) use ($buscarPor) {
-                    $query->where('nombre', 'LIKE', "%$buscarPor%");
-                })
-                ->where('estado', '!=', '0')
-                ->paginate(self::PAGINATION);
-        } else {
-            $orden_compra = Orden_Compra::where('estado', '!=', '0')
-                ->paginate(self::PAGINATION);
+        if ($request->filled('empleado_nombre')) {
+            $nombre = $request->empleado_nombre;
+            $query->whereHas('empleado', function ($q) use ($nombre) {
+                $q->where('nombre', 'like', "%{$nombre}%");
+            });
         }
 
-        return view('orden_compras.index', compact('orden_compra'));
+        if ($request->filled('proveedor_razon_social')) {
+            $razonSocial = $request->proveedor_razon_social;
+            $query->whereHas('proveedor', function ($q) use ($razonSocial) {
+                $q->where('razon_social', 'like', "%{$razonSocial}%");
+            });
+        }
+
+        $ordenes = $query->paginate(10);
+
+        return view('orden_compra.index', compact('ordenes'));
     }
 }

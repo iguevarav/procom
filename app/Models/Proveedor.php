@@ -19,8 +19,9 @@ class Proveedor extends Model
         return $this->belongsTo(Tipo_Proveedor::class, 'tipo_proveedor_id');
     } 
 
-    public function ordenCompra(){
-        return $this->hasMany(Orden_Compra::class, 'proveedor_id', 'id');
+    public function ordenesCompra()
+    {
+        return $this->hasMany(OrdenCompra::class, 'proveedor_id');
     }
 
 }

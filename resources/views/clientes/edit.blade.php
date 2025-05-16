@@ -30,5 +30,5 @@
         document.querySelector('.btnVolver').addEventListener('click', function () {
             window.location.href = "{{ route('clientes.index') }}";
         });
-    });s
+    });
 </script>

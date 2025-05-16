@@ -13,11 +13,6 @@ class CargoController extends Controller
         return view('cargos.index', compact('cargo'));
     }
 
-    // public function create()
-    // {
-    //     return view('cargos.create');
-    // }
-
     public function store(Request $request)
     {
         $request->validate([

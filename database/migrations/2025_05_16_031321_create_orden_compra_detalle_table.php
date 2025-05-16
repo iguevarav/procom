@@ -11,19 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('detalle_orden_compras', function (Blueprint $table) {
+        Schema::create('orden_compra_detalle', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('orden_compra_id');
-            $table->unsignedBigInteger('producto_id');
+            $table->foreignId('orden_compra_id')->constrained('orden_compra')->onDelete('cascade');
+            $table->foreignId('producto_id')->constrained('productos');
             $table->integer('cantidad');
             $table->decimal('precio_unitario', 10, 2);
-            $table->decimal('subtotal_item', 10, 2);
+            $table->decimal('subtotal', 10, 2);
             $table->timestamps();
-        
-            $table->foreign('orden_compra_id')->references('id')->on('orden_compras');
-            $table->foreign('producto_id')->references('id')->on('productos');
         });
-        
     }
 
     /**
@@ -31,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('orden_compra_detalle');
     }
 };

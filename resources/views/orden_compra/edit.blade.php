@@ -1,24 +1,26 @@
-@extends ('admin.dashboard')
+@extends('admin.dashboard')
 
 @section('content_header')
-<h3 class="container-custom">NUEVO REGISTRO</h3>
+<h3 class="container-custom text-secondary fw-bold border-bottom pb-2 mb-4">
+    EDITAR <span class="text-primary">{{ $orden->numero_documento }}</span>
+</h3>
+
 @endsection
 
 @section('content')
 <div class="container-custom">
-    @include('clientes.forms.form_create_cliente')
+    @include('orden_compra.forms.form_edit_orden_compra')
 </div>
 
 <div class="container-custom card-style settings-card-1 mb-30">
     <div class="card-footer d-flex justify-content-between align-items-center">
         <span style="color:rgb(219, 155, 35);font-size:14px;font-weight:bold;">Los campos son obligatorios</span>
-
         <div style="display:flex;">
             <button class="btn btn-danger btnVolver" style="margin-right:5px;" type="button">
                 <i class="fa-solid fa-door-open"></i> VOLVER
             </button>
-            <button class="btn btn-primary" type="submit" form="formRegistrarCliente">
-                <i class="fa-solid fa-floppy-disk"></i> REGISTRAR
+            <button class="btn btn-primary" type="submit" form="formActualizarOrdenCompra">
+                <i class="fa-solid fa-floppy-disk"></i> ACTUALIZAR
             </button>
         </div>
     </div>
@@ -26,9 +28,9 @@
 @endsection
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelector('.btnVolver').addEventListener('click', function () {
-            window.location.href = "{{ route('clientes.index') }}";
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('.btnVolver').addEventListener('click', function() {
+            window.location.href = "{{ route('orden_compra.index') }}";
         });
     });
 </script>

@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\CategoriaController;
@@ -12,10 +11,14 @@ use App\Http\Controllers\UnidadController;
 use App\Http\Controllers\CargoController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrdenCompraController;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
+
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 
@@ -115,15 +118,19 @@ Route::group(['prefix'=>'proveedores'], function(){
 
 });
 
-Route::group(['prefix' => 'orden_compras'], function () {
-    Route::get('/index', [OrdenCompraController::class, 'index'])->name('orden_compras.index');
-    Route::get('/create', [OrdenCompraController::class, 'create'])->name('orden_compras.create');
-    Route::post('/store', [OrdenCompraController::class, 'store'])->name('orden_compras.store');
-    Route::get('/edit/{id}', [OrdenCompraController::class, 'edit'])->name('orden_compras.edit');
-    Route::put('/update/{id}', [OrdenCompraController::class, 'update'])->name('orden_compras.update');
-    Route::delete('/destroy/{id}', [OrdenCompraController::class, 'destroy'])->name('orden_compras.destroy');
-    Route::get('/show/{id}', [OrdenCompraController::class, 'show'])->name('orden_compras.show');
-    Route::get('/buscar', [OrdenCompraController::class, 'buscar'])->name('orden_compras.buscar');
+Route::group(['prefix' => 'orden_compra'], function () {
+    Route::get('/index', [OrdenCompraController::class, 'index'])->name('orden_compra.index');
+    Route::get('/create', [OrdenCompraController::class, 'create'])->name('orden_compra.create');
+    Route::post('/store', [OrdenCompraController::class, 'store'])->name('orden_compra.store');
+    Route::get('/show/{id}', [OrdenCompraController::class, 'show'])->name('orden_compra.show');
+    Route::get('/edit/{id}', [OrdenCompraController::class, 'edit'])->name('orden_compra.edit');
+    Route::put('/update/{id}', [OrdenCompraController::class, 'update'])->name('orden_compra.update');
+    Route::delete('/destroy/{id}', [OrdenCompraController::class, 'destroy'])->name('orden_compra.destroy');
+    Route::get('/buscar', [OrdenCompraController::class, 'buscar'])->name('orden_compra.buscar');
+
 
 });
 
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
