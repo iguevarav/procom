@@ -127,9 +127,10 @@ Route::group(['prefix' => 'orden_compra'], function () {
     Route::put('/update/{id}', [OrdenCompraController::class, 'update'])->name('orden_compra.update');
     Route::delete('/destroy/{id}', [OrdenCompraController::class, 'destroy'])->name('orden_compra.destroy');
     Route::get('/buscar', [OrdenCompraController::class, 'buscar'])->name('orden_compra.buscar');
-
-
+    Route::post('/set_estado/{id}', [OrdenCompraController::class, 'setEstado'])->name('orden_compra.set_estado');
 });
+
+
 
 Auth::routes();
 

@@ -21,20 +21,26 @@
             <td>{{ $orden->fecha_compra->format('d/m/Y') }}</td>
             <td>{{ number_format($orden->subtotal, 2) }}</td>
             <td>{{ ucfirst($orden->estado) }}</td>
-
             <td>
-                <a href="{{ route('orden_compra.show', $orden->id) }}" class="btn btn-info btn-sm">
-                    <i class="fas fa-eye"></i> Ver
-                </a>
-
                 <a href="{{ route('orden_compra.edit', $orden->id) }}" class="btn btn-info btn-sm">
-                    <i class="fas fa-edit"></i> Editar
+                    <i class="fas fa-edit"></i>
                 </a>
                 <form action="{{ route('orden_compra.destroy', $orden->id) }}" method="POST" style="display:inline;">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger btn-sm" onclick=" return confirm('¿Estás seguro de eliminar este registro?')">
-                        <i class="fas fa-trash"></i> Eliminar
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </form>
+
+                <a href="{{ route('orden_compra.show', $orden->id) }}" class="btn btn-info btn-sm">
+                    <i class="fas fa-eye"></i> Ver
+                </a>
+
+                <form action="{{ route('orden_compra.set_estado', $orden->id) }}" method="POST" style="display:inline;">
+                    @csrf
+                    <button type="submit" class="btn btn-success btn-sm">
+                        <i class="fa-solid fa-check"></i> Aprobar
                     </button>
                 </form>
             </td>

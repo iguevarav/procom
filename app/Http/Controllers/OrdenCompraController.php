@@ -74,6 +74,16 @@ class OrdenCompraController extends Controller
         return redirect()->route('orden_compra.index')->with('success', 'Orden creada correctamente');
     }
 
+    public function setEstado($id )
+    {
+        $orden = OrdenCompra::findOrFail($id);
+        $orden->estado = 'aprobado'; // Cambiar el estado a 'aprobado'
+        $orden->save();
+
+        return redirect()->route('orden_compra.index')->with('success', 'Estado de la orden actualizado correctamente.');
+    }
+        
+
     public function show($id)
      {
          $orden = OrdenCompra::with(['empleado', 'proveedor', 'detalles.producto'])->findOrFail($id);
